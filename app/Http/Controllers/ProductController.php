@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     public function index(){
-        return "Listado de productos";
+        return view("product.index");
     }
     public function create(){
-        return "Crera un producto producto";
+        return view("product.create");
     }
     public function show($id, $categoria=null){
         if ($categoria == null){
