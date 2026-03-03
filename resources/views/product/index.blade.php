@@ -51,17 +51,14 @@
                 @foreach($milista as $product)
                 <div class="group flex flex-col bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl">
                     <div class="relative w-full aspect-[4/3] bg-slate-50 dark:bg-slate-700/50 p-6 flex items-center justify-center">
-                        {{-- Puedes cambiar el src por la imagen de tu base de datos: $product->image_url --}}
-                        <img alt="{{ $product->name }}" class="w-full h-full object-contain transition-transform group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9h2iQBRYOIUuqZNfIbrC-AZh6ruyJ8NKmqOjGGXi24psO6Yz-O-YX-7P02dRrgVVjS32PQvI1sAp5gKT19JMRpQF21CTU961OOZ2Q2xIRx3_A0nZUUMYSo_mBdOM4zzuTt5J63Jz1naApdZyEHohxEb9R-_fREqrIYeHf1d2J8-3AKRaH5rWKDJeunxy64-wjsmYE1WJjYz8yQJ_HxGvysF76cGC-kTKLjrcorlpSdjDVW85QjPomoy5hSjZoPwoejw3ZdWlTZJs"/>
+                        {{-- CORRECCIÓN: Usamos asset() para llamar a la imagen desde Storage --}}
+                        <img alt="{{ $product->name }}" class="w-full h-full object-contain transition-transform group-hover:scale-105" src="{{ asset('storage/' . $product->image) }}"/>
                     </div>
                     <div class="p-4 flex flex-col gap-2 flex-1">
                         <div class="flex justify-between items-start">
-                            {{-- Nombre dinámico --}}
                             <h3 class="text-lg font-medium">{{ $product->name }}</h3>
-                            {{-- Precio dinámico --}}
                             <p class="text-primary font-bold">${{ number_format($product->price, 2) }}</p>
                         </div>
-                        {{-- Descripción dinámica --}}
                         <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">{{ $product->description }}</p>
                         <div class="mt-auto pt-4">
                             <button class="w-full h-10 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white font-medium text-sm hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2">

@@ -5,7 +5,7 @@
 @section('content')
     <main class="flex-grow flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
         
-        {{-- CAMBIO AQUÍ: Usamos route('produc.store') --}}
+        {{-- Usamos la ruta correctamente nombrada --}}
         <form action="{{ route('produc.store') }}" method="POST" enctype="multipart/form-data" class="w-full flex flex-col items-center">
             @csrf
 
@@ -64,6 +64,7 @@
                                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                             <span class="material-symbols-outlined text-[18px] text-slate-400 dark:text-slate-500">category</span>
                                         </div>
+                                        {{-- Mantenemos name="category_id" --}}
                                         <select name="category_id" id="category_id" class="w-full appearance-none rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] pl-10 pr-4 py-3 text-base text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" required>
                                             <option value="" disabled selected>Select a category</option>
                                             @foreach($myCategorias as $categoria)
@@ -75,11 +76,11 @@
                             </div>
                             
                             <div class="flex flex-col gap-2">
-                                {{-- APLICAMOS EL CONSEJO: Cambiamos 'descripción' por 'description' --}}
                                 <label class="text-slate-700 dark:text-slate-300 text-sm font-medium uppercase tracking-wider flex justify-between" for="description">
                                     Description
                                     <span class="text-slate-400 dark:text-slate-600 text-xs normal-case font-normal">0/500 characters</span>
                                 </label>
+                                {{-- Mantenemos name="description" --}}
                                 <textarea name="description" id="description" class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] px-4 py-3 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none resize-none" placeholder="Características del producto..." rows="4" required></textarea>
                             </div>
                         </div>

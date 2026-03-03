@@ -26,18 +26,33 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(Request $request){
-        $newProduct = new Product();
-        $newProduct->name = $request->input("nombre");
-        $newProduct->description = $request->input("description"); 
-        $newProduct->price = $request->input("precio");
-        $newProduct->category_id = $request->input("category_id");
+public function store(Request $request) {
+    $newProduct = new Product();
+    
+    // Asignación de datos
+    $newProduct->name = $request->input("nombre");
+    $newProduct->description = $request->input("description");
+    $newProduct->price = $request->input("precio");
+    $newProduct->category_id = $request->input("category_id");
 
-        $newProduct->save();
-        
-        // Redireccionamos a la ruta con nombre 'produc.index' (/product)
-        return redirect()->route('produc.index');
+    // SOLUCIÓN: Capturar el status. 
+    // Como los checkbox no envían nada si no están marcados, 
+    // usamos 'inactive' como valor por defecto.
+    $newProduct->status = $request->has('status') ? 'active' : 'inactive';
+
+    // Lógica de la imagen (esto ya te funciona bien)
+    if ($request->hasFile("imagen")) {
+        $ruta = $request->file("imagen")->store("imagenes", "public");
+        $newProduct->image = $ruta;
+    } else {
+        $newProduct->image = "no hay ruta";
     }
+
+    // Ahora el guardado debería funcionar perfectamente
+    $newProduct->save(); 
+
+    return redirect()->route('produc.index')->with('success', 'Producto creado exitosamente');
+}
 
 
     public function show($id){
