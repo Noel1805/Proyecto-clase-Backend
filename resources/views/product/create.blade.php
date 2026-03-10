@@ -5,8 +5,8 @@
 @section('content')
     <main class="flex-grow flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
         
-        {{-- Usamos la ruta correctamente nombrada --}}
-        <form action="{{ route('produc.store') }}" method="POST" enctype="multipart/form-data" class="w-full flex flex-col items-center">
+        {{-- Asegúrate de que el nombre aquí coincida con el ->name() en web.php --}}
+        <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data" class="w-full flex flex-col items-center">
             @csrf
 
             <div class="w-full max-w-4xl mb-8">
@@ -35,6 +35,22 @@
 
             <div class="w-full max-w-4xl bg-white dark:bg-[#1c1c27] rounded-xl border border-slate-200 dark:border-[#282a39] shadow-sm overflow-hidden">
                 <div class="p-8">
+                    
+                    {{-- INDICADOR DE ERRORES --}}
+                    @if ($errors->any())
+                        <div class="mb-8 p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-lg">
+                            <div class="flex items-center gap-2 text-red-800 dark:text-red-400 font-bold mb-2">
+                                <span class="material-symbols-outlined text-[20px]">error</span>
+                                Por favor corrige los siguientes errores:
+                            </div>
+                            <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-300">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="mb-10">
                         <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                             <span class="material-symbols-outlined text-primary">info</span>
@@ -44,7 +60,7 @@
                             
                             <div class="flex flex-col gap-2">
                                 <label class="text-slate-700 dark:text-slate-300 text-sm font-medium uppercase tracking-wider" for="nombre">Product Name</label>
-                                <input name="nombre" id="nombre" class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] px-4 py-3 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Ej: Licencia de Software IDE Pro" type="text" required/>
+                                <input name="nombre" id="nombre" value="{{ old('nombre') }}" class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] px-4 py-3 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Ej: Licencia de Software IDE Pro" type="text" />
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -54,7 +70,7 @@
                                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                             <span class="text-slate-500 dark:text-slate-400 font-medium">$</span>
                                         </div>
-                                        <input name="precio" id="precio" class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] pl-8 pr-4 py-3 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="99.99" step="0.01" type="number" required/>
+                                        <input name="precio" id="precio" value="{{ old('precio') }}" class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] pl-8 pr-4 py-3 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="99.99" step="0.01" type="number" />
                                     </div>
                                 </div>
                                 
@@ -64,11 +80,10 @@
                                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                             <span class="material-symbols-outlined text-[18px] text-slate-400 dark:text-slate-500">category</span>
                                         </div>
-                                        {{-- Mantenemos name="category_id" --}}
-                                        <select name="category_id" id="category_id" class="w-full appearance-none rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] pl-10 pr-4 py-3 text-base text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" required>
-                                            <option value="" disabled selected>Select a category</option>
+                                        <select name="category_id" id="category_id" class="w-full appearance-none rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] pl-10 pr-4 py-3 text-base text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" >
+                                            <option value="" disabled {{ old('category_id') ? '' : 'selected' }}>Select a category</option>
                                             @foreach($myCategorias as $categoria)
-                                                <option value="{{ $categoria->id }}">{{ $categoria->name }}</option>
+                                                <option value="{{ $categoria->id }}" {{ old('category_id') == $categoria->id ? 'selected' : '' }}>{{ $categoria->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -78,10 +93,8 @@
                             <div class="flex flex-col gap-2">
                                 <label class="text-slate-700 dark:text-slate-300 text-sm font-medium uppercase tracking-wider flex justify-between" for="description">
                                     Description
-                                    <span class="text-slate-400 dark:text-slate-600 text-xs normal-case font-normal">0/500 characters</span>
                                 </label>
-                                {{-- Mantenemos name="description" --}}
-                                <textarea name="description" id="description" class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] px-4 py-3 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none resize-none" placeholder="Características del producto..." rows="4" required></textarea>
+                                <textarea name="description" id="description" class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border border-slate-200 dark:border-[#3b3d54] px-4 py-3 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none resize-none" placeholder="Características del producto..." rows="4" >{{ old('description') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -104,7 +117,6 @@
                                     <div class="mt-4 flex flex-col gap-1 text-sm leading-6 text-slate-600 dark:text-slate-400">
                                         <span class="font-semibold text-primary">Click to upload</span> or drag and drop
                                     </div>
-                                    <p class="text-xs text-slate-500 dark:text-slate-500 mt-1">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                                 </div>
                             </div>
                         </div>
