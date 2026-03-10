@@ -45,31 +45,61 @@
         </section>
 
         <section class="mb-16">
-            <h2 class="text-2xl font-bold mb-6">Featured Products</h2>
+            {{-- HEADER DE PRODUCTOS + BOTÓN DE AÑADIR --}}
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <h2 class="text-2xl font-bold">Featured Products</h2>
+                <a href="{{ url('/product/create') }}" class="flex items-center gap-2 bg-primary hover:bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined text-[20px]">add_circle</span>
+                    Add New Product
+                </a>
+            </div>
+            
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 
                 @foreach($milista as $product)
-                <div class="group flex flex-col bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl">
-                    <div class="relative w-full aspect-[4/3] bg-slate-50 dark:bg-slate-700/50 p-6 flex items-center justify-center">
-                        {{-- CORRECCIÓN: Usamos asset() para llamar a la imagen desde Storage --}}
+                <div class="group flex flex-col bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:border-primary transition-all hover:shadow-xl relative">
+                    
+                    {{-- IMAGEN CLICKABLE: Redirige a la vista Show del producto --}}
+                    <a href="{{ url('/product/' . $product->id) }}" class="relative w-full aspect-[4/3] bg-slate-50 dark:bg-slate-700/50 p-6 flex items-center justify-center block">
                         <img alt="{{ $product->name }}" class="w-full h-full object-contain transition-transform group-hover:scale-105" src="{{ asset('storage/' . $product->image) }}"/>
-                    </div>
+                    </a>
+                    
                     <div class="p-4 flex flex-col gap-2 flex-1">
                         <div class="flex justify-between items-start">
-                            <h3 class="text-lg font-medium">{{ $product->name }}</h3>
+                            {{-- TÍTULO CLICKABLE: Redirige a la vista Show del producto --}}
+                            <a href="{{ url('/product/' . $product->id) }}" class="hover:text-primary transition-colors">
+                                <h3 class="text-lg font-medium">{{ $product->name }}</h3>
+                            </a>
                             <p class="text-primary font-bold">${{ number_format($product->price, 2) }}</p>
                         </div>
                         <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">{{ $product->description }}</p>
-                        <div class="mt-auto pt-4">
-                            <button class="w-full h-10 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white font-medium text-sm hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Add to Cart
+                        
+                        {{-- BOTONES DE ACCIÓN (AGREGAR AL CARRITO Y ELIMINAR) --}}
+                        <div class="mt-auto pt-4 flex gap-2 relative z-10">
+                            <button class="flex-1 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white font-medium text-sm hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Add
                             </button>
+                            
+                            {{-- Formulario para eliminar producto --}}
+                            <form action="{{ route('product.destroy', $product->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="h-10 px-3 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center" title="Delete Product">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
                 @endforeach
 
             </div>
+
+            {{-- PAGINACIÓN AQUÍ --}}
+            <div class="mt-10">
+                {{ $milista->links() }}
+            </div>
+
         </section>
 
         <section class="mb-16 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-800 dark:to-slate-900 p-8 lg:p-12 text-white relative overflow-hidden">
