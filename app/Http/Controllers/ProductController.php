@@ -66,13 +66,15 @@ public function store(Request $request) {
 }
 
 
-    public function show($id){
-        return view("product.show");
-
+    public function show(Product $product){
+        return view('product.show', [
+            'product' => $product,
+        ]);
     }
 
     public function destroy(Product $product){
         $product->delete();
         return redirect()->route("produc.index");
     }
+    
 }
