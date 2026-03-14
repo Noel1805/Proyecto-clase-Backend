@@ -3,22 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\LandingPageSetting;
 use App\Models\Product;
 
 class HomeController extends Controller
 {
     public function __invoke()
     {
-        $featuredProducts = Product::where('status', 'active')
-            ->latest()
-            ->take(8)
-            ->get();
+        $settings = LandingPageSetting::getSettings();
 
-        $categories = Category::all();
+        $featuredProducts = $settings->show_featured
+            ? Product::where('status', 'active')
+                ->latest()
+                ->take($settings->featured_count)
+                ->get()
+            : collect();
 
-        return view('welcome', [
-            'featuredProducts' => $featuredProducts,
-            'categories'       => $categories,
-        ]);
+        $categories = $settings->show_categories
+            ? Category::all()
+            : collect();
+
+        return view('welcome', compact('settings', 'featuredProducts', 'categories'));
     }
 }

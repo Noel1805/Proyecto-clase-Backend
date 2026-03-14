@@ -59,6 +59,11 @@
                 <a class="text-primary dark:text-white text-sm font-medium leading-normal" href="#">Products</a>
                 <a class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Orders</a>
                 <a class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Analytics</a>
+                <a class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white
+                text-sm font-medium leading-normal transition-colors"
+                href="{{ route('admin.landing.edit') }}">
+                    Configuración
+                </a>
             </nav>
         </div>
         <div class="flex flex-1 justify-end gap-6 items-center">

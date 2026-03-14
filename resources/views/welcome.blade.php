@@ -17,34 +17,45 @@
                              uppercase tracking-wider w-fit mx-auto lg:mx-0">
                     Nuevo lanzamiento
                 </span>
+                
+                {{-- Hero title modificado --}}
                 <h1 class="text-slate-900 dark:text-white text-4xl sm:text-5xl
                            lg:text-7xl font-bold leading-[1.1] tracking-tight">
-                    El Futuro es <span class="text-primary">Plegable</span>.
+                    {{ $settings->hero_title }}
                 </h1>
+
+                {{-- Hero subtitle condicional --}}
+                @if($settings->hero_subtitle)
                 <p class="text-slate-600 dark:text-slate-400 text-base sm:text-lg
                           font-normal leading-relaxed max-w-lg">
-                    Descubre la tecnología más avanzada del mercado.
-                    Desdobla posibilidades infinitas.
+                    {{ $settings->hero_subtitle }}
                 </p>
+                @endif
+
                 <div class="flex gap-4 w-full sm:w-auto flex-col sm:flex-row">
+                    {{-- CTA modificado --}}
                     <a href="{{ route('produc.index') }}"
                        class="flex items-center justify-center rounded-lg h-12 px-8
                               bg-primary hover:bg-blue-600 text-white text-base
                               font-bold transition-all shadow-lg shadow-primary/25">
-                        Ver productos
+                        {{ $settings->cta_text }}
                     </a>
                 </div>
             </div>
             <div class="w-full lg:w-1/2 flex items-center justify-center">
-                <img alt="Producto destacado"
+                {{-- Hero image dinámica --}}
+                <img alt="Banner principal"
                      class="w-full max-w-[500px] h-auto object-contain drop-shadow-2xl
                             hover:scale-105 transition-transform duration-500"
-                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmf4tu6eP2qi3Vw3Xt6JgusNHiVBkN6mlfJSb1yEcASysZyvZoNSURYPv8zCe17F1ISBulEa6HtgiurDLC7eJjXevpil_0EZ0NT0ZnWKs5tcuLhLOVtMHMNqCZZE3xfuw1sKPlNCP1BqiTtO7fJa1JIcXr1OlXO46Hg5iEINtvvxwQ6w3HDmTipc9mbkkSeUDTx0ZI_gaAcXmbaYAM6fuLqF4PqKX5u3K0GVnejgb6kx83LsJPpGchKZRk5_tW4PYK0N09QITpJMY"/>
+                     src="{{ $settings->hero_image 
+                            ? asset('storage/' . $settings->hero_image) 
+                            : 'https://lh3.googleusercontent.com/aida-public/AB6AXuDmf4tu6eP2qi3Vw3Xt6JgusNHiVBkN6mlfJSb1yEcASysZyvZoNSURYPv8zCe17F1ISBulEa6HtgiurDLC7eJjXevpil_0EZ0NT0ZnWKs5tcuLhLOVtMHMNqCZZE3xfuw1sKPlNCP1BqiTtO7fJa1JIcXr1OlXO46Hg5iEINtvvxwQ6w3HDmTipc9mbkkSeUDTx0ZI_gaAcXmbaYAM6fuLqF4PqKX5u3K0GVnejgb6kx83LsJPpGchKZRk5_tW4PYK0N09QITpJMY' }}"/>
             </div>
         </div>
     </section>
 
-    {{-- Categorías --}}
+    {{-- Categorías condicional --}}
+    @if($settings->show_categories)
     <section class="mb-10">
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-bold">Categorías</h3>
@@ -66,8 +77,10 @@
             @endforeach
         </div>
     </section>
+    @endif
 
-    {{-- Productos destacados --}}
+    {{-- Productos destacados condicional --}}
+    @if($settings->show_featured)
     <section class="mb-16">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold">Productos destacados</h2>
@@ -81,6 +94,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($featuredProducts as $product)
+            {{-- Contenedor del producto individual --}}
             <div class="group flex flex-col bg-white dark:bg-slate-800 rounded-xl
                         overflow-hidden border border-slate-200 dark:border-slate-700
                         hover:border-primary transition-all hover:shadow-xl">
@@ -122,6 +136,7 @@
             @endforeach
         </div>
     </section>
+    @endif
 
 </main>
 @endsection
