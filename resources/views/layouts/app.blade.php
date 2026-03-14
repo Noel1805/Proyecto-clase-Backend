@@ -54,17 +54,26 @@
                 </div>
                 <h2 class="text-xl font-bold leading-tight tracking-[-0.015em] group-hover:text-primary transition-colors">TechStore</h2>
             </div>
+            
             <nav class="hidden md:flex items-center gap-9">
                 <a class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Dashboard</a>
+                
                 <a class="text-primary dark:text-white text-sm font-medium leading-normal" href="#">Products</a>
+                
+                {{-- NUEVO ENLACE DE CATEGORÍAS --}}
+                <a href="{{ route('category.index') }}" class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors">
+                    Categorías
+                </a>
+                
                 <a class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Orders</a>
+                
                 <a class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Analytics</a>
-                <a class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white
-                text-sm font-medium leading-normal transition-colors"
-                href="{{ route('admin.landing.edit') }}">
+                
+                <a href="{{ route('admin.landing.edit') }}" class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal transition-colors">
                     Configuración
                 </a>
             </nav>
+            
         </div>
         <div class="flex flex-1 justify-end gap-6 items-center">
             <div class="hidden sm:flex relative w-full max-w-xs h-10">

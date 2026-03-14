@@ -74,14 +74,22 @@
                         </div>
                         <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">{{ $product->description }}</p>
                         
-                        {{-- BOTONES DE ACCIÓN (AGREGAR AL CARRITO Y ELIMINAR) --}}
+                        {{-- BOTONES DE ACCIÓN (AGREGAR AL CARRITO, EDITAR Y ELIMINAR) --}}
                         <div class="mt-auto pt-4 flex gap-2 relative z-10">
+                            {{-- Botón de Añadir --}}
                             <button class="flex-1 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white font-medium text-sm hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Add
                             </button>
                             
+                            {{-- Botón de Editar --}}
+                            <a href="{{ route('product.edit', $product->id) }}"
+                               class="h-10 px-3 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white transition-colors flex items-center justify-center shrink-0"
+                               title="Editar Producto">
+                                <span class="material-symbols-outlined text-[20px]">edit</span>
+                            </a>
+                            
                             {{-- Formulario para eliminar producto --}}
-                            <form action="{{ route('product.destroy', $product->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                            <form action="{{ route('product.destroy', $product->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');" class="shrink-0">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="h-10 px-3 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center" title="Delete Product">
