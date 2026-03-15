@@ -2,37 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Favorite;
 use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class FavoriteController extends Controller
 {
+    private function getFavoriteIds(): array
+    {
+        return Session::get('favorites', []);
+    }
+
     public function index()
     {
-        $favorites = Favorite::with('product')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        $favoriteIds = $this->getFavoriteIds();
+
+        $favorites = collect();
+        foreach ($favoriteIds as $productId) {
+            $product = Product::find($productId);
+            if ($product) {
+                $favorites->push($product);
+            }
+        }
 
         return view('favorites.index', compact('favorites'));
     }
 
     public function toggle(Product $product)
     {
-        $existing = Favorite::where('user_id', Auth::id())
-            ->where('product_id', $product->id)
-            ->first();
+        $favoriteIds = $this->getFavoriteIds();
 
-        if ($existing) {
-            $existing->delete();
+        if (in_array($product->id, $favoriteIds)) {
+            $favoriteIds = array_values(
+                array_filter($favoriteIds, fn($id) => $id !== $product->id)
+            );
         } else {
-            Favorite::create([
-                'user_id'    => Auth::id(),
-                'product_id' => $product->id,
-            ]);
+            $favoriteIds[] = $product->id;
         }
 
+        Session::put('favorites', $favoriteIds);
+
         return redirect()->back();
+    }
+
+    public function clear()
+    {
+        Session::forget('favorites');
+        return redirect()->route('favorites.index')
+            ->with('success', 'Favoritos eliminados.');
+    }
+
+    public function addAllToCart()
+    {
+        $favoriteIds = $this->getFavoriteIds();
+        $cart        = session('cart', []);
+
+        foreach ($favoriteIds as $productId) {
+            $cart[$productId] = ($cart[$productId] ?? 0) + 1;
+        }
+
+        session(['cart' => $cart]);
+
+        return redirect()->route('cart.index')
+            ->with('success', 'Todos los favoritos fueron agregados al carrito.');
     }
 }
