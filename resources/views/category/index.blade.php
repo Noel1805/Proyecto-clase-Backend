@@ -92,8 +92,9 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full
-                                     text-xs font-medium bg-primary/10 text-primary">
+                        <span class="inline-flex items-center px-2.5 py-0.5
+                                     rounded-full text-xs font-medium
+                                     bg-primary/10 text-primary">
                             {{ $category->products()->count() }}
                         </span>
                     </td>
@@ -115,8 +116,8 @@
                                 @method('DELETE')
                                 <button type="submit"
                                         class="p-2 rounded-lg text-red-500
-                                               hover:text-red-600 hover:bg-red-500/10
-                                               transition-colors"
+                                               hover:text-red-600
+                                               hover:bg-red-500/10 transition-colors"
                                         title="Eliminar">
                                     <span class="material-symbols-outlined text-[18px]">
                                         delete
@@ -128,8 +129,9 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="px-6 py-12 text-center text-slate-500
-                                           dark:text-[#9d9fb9]">
+                    <td colspan="5"
+                        class="px-6 py-12 text-center text-slate-500
+                               dark:text-[#9d9fb9]">
                         No hay categorías registradas.
                     </td>
                 </tr>

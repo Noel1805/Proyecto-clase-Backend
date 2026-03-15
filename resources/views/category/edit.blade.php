@@ -7,15 +7,15 @@
 
     <div class="w-full max-w-2xl mb-8">
         {{-- Título actualizado con el nombre de la categoría --}}
-        <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+        <h1 class="text-3xl font-bold text-slate-900 mb-2">
             Editar categoría: {{ $category->name }}
         </h1>
     </div>
 
     @if($errors->any())
-    <div class="w-full max-w-2xl mb-6 p-4 bg-red-50 dark:bg-red-500/10 border
-                border-red-200 dark:border-red-500/30 rounded-lg">
-        <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-300">
+    <div class="w-full max-w-2xl mb-6 p-4 bg-red-50 border
+                border-red-200 rounded-lg">
+        <ul class="list-disc list-inside text-sm text-red-700">
             @foreach($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
@@ -25,38 +25,38 @@
 
     {{-- Formulario actualizado apuntando a category.update --}}
     <form action="{{ route('category.update', $category) }}" method="POST"
-          class="w-full max-w-2xl bg-white dark:bg-[#1c1c27] rounded-xl border
-                 border-slate-200 dark:border-[#282a39] shadow-sm p-8 space-y-6">
+          class="w-full max-w-2xl bg-white rounded-xl border
+                 border-slate-200 shadow-sm p-8 space-y-6">
         @csrf
         @method('PUT')
 
         <div class="flex flex-col gap-2">
             <label for="name"
-                   class="text-slate-700 dark:text-slate-300 text-sm font-medium
+                   class="text-slate-700 text-sm font-medium
                           uppercase tracking-wider">
                 Nombre *
             </label>
             {{-- Input con old() y el valor del modelo --}}
             <input type="text" name="name" id="name"
                    value="{{ old('name', $category->name) }}"
-                   class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border
-                          border-slate-200 dark:border-[#3b3d54] px-4 py-3 text-base
-                          text-slate-900 dark:text-white focus:ring-2
+                   class="w-full rounded-lg bg-slate-50 border
+                          border-slate-200 px-4 py-3 text-base
+                          text-slate-900 focus:ring-2
                           focus:ring-primary focus:border-transparent outline-none"
                    placeholder="Ej: Smartphones"/>
         </div>
 
         <div class="flex flex-col gap-2">
             <label for="description"
-                   class="text-slate-700 dark:text-slate-300 text-sm font-medium
+                   class="text-slate-700 text-sm font-medium
                           uppercase tracking-wider">
                 Descripción
             </label>
             {{-- Textarea con old() y el valor del modelo --}}
             <textarea name="description" id="description" rows="4"
-                      class="w-full rounded-lg bg-slate-50 dark:bg-[#111218] border
-                             border-slate-200 dark:border-[#3b3d54] px-4 py-3 text-base
-                             text-slate-900 dark:text-white focus:ring-2
+                      class="w-full rounded-lg bg-slate-50 border
+                             border-slate-200 px-4 py-3 text-base
+                             text-slate-900 focus:ring-2
                              focus:ring-primary focus:border-transparent outline-none
                              resize-none"
                       placeholder="Descripción opcional de la categoría">{{ old('description', $category->description) }}</textarea>
@@ -64,7 +64,7 @@
 
         <div class="flex items-center justify-between pt-4">
             <a href="{{ route('category.index') }}"
-               class="text-slate-500 dark:text-[#9d9fb9] hover:text-primary
+               class="text-slate-500 hover:text-primary
                       transition-colors text-sm">
                 Cancelar
             </a>

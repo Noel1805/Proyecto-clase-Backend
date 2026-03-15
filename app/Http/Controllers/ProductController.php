@@ -2,21 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(){
-        $productuctlist=Product::paginate(12);
+    public function index(Request $request)
+    {
+        $query = $request->input('search');
 
-        //$product1 = $productuctlist[0];
-        //dd($productuctlist[0]);
-        //dd($product1);
+        $productuctlist = Product::when($query, function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%')
+                ->orWhere('description', 'like', '%' . $query . '%');
+            })
+            ->paginate(12)
+            ->withQueryString();
+
+        // IDs de favoritos del usuario actual para usarlos en la vista
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = \App\Models\Favorite::where('user_id', Auth::id())
+                ->pluck('product_id')
+                ->toArray();
+        }
 
         return view("product.index", [
-            "milista"=>$productuctlist
+            "milista"     => $productuctlist,
+            "search"      => $query,
+            "favoriteIds" => $favoriteIds,
         ]);
     }
 

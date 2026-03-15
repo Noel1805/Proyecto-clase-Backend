@@ -119,18 +119,25 @@
                     <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2">
                         {{ $product->description }}
                     </p>
+                    
+                    {{-- DESPUÉS: form real que envía al carrito --}}
                     <div class="mt-auto pt-3">
-                        <button class="w-full h-9 rounded-lg bg-slate-100
-                                       dark:bg-slate-700 text-slate-900 dark:text-white
-                                       font-medium text-sm hover:bg-primary
-                                       hover:text-white transition-colors flex
-                                       items-center justify-center gap-2">
-                            <span class="material-symbols-outlined text-[18px]">
-                                add_shopping_cart
-                            </span>
-                            Agregar
-                        </button>
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                    class="w-full h-9 rounded-lg bg-slate-100
+                                           dark:bg-slate-700 text-slate-900 dark:text-white
+                                           font-medium text-sm hover:bg-primary
+                                           hover:text-white transition-colors flex
+                                           items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">
+                                    add_shopping_cart
+                                </span>
+                                Agregar
+                            </button>
+                        </form>
                     </div>
+
                 </div>
             </div>
             @endforeach
